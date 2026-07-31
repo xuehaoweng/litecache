@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="litecache — a tiny, thread-safe in-memory cache for Python with TTL and LRU eviction."
+    />
+    <meta name="theme-color" content="#07110f" />
+    <title>litecache — Caching, without the server.</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./script.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="litecache home">
+        <span class="brand-mark" aria-hidden="true">L</span>
+        <span>litecache</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#features" data-copy="navFeatures">Features</a>
+        <a href="#api">API</a>
+        <a href="https://github.com/xuehaoweng/litecache">GitHub</a>
+        <button class="language" type="button" aria-label="切换到中文">中文</button>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <div class="hero-copy">
+          <h1 data-copy="heroTitle">Caching,<br />without the server.</h1>
+          <p data-copy="heroBody">
+            A tiny, thread-safe in-memory cache for Python with TTL expiration
+            and LRU eviction.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="https://github.com/xuehaoweng/litecache">
+              <span data-copy="viewGithub">View on GitHub</span>
+              <svg aria-hidden="true" viewBox="0 0 20 20">
+                <path d="M4 10h11M11 6l4 4-4 4" />
+              </svg>
+            </a>
+            <a class="button secondary" href="../README.md" data-copy="readDocs">
+              Read the docs
+            </a>
+          </div>
+        </div>
+
+        <div class="terminal-wrap" aria-label="litecache Python example">
+          <div class="terminal-bar">
+            <span class="terminal-dot"></span>
+            <span class="terminal-title">python · litecache</span>
+            <button class="copy-code" type="button" data-copy="copy">Copy</button>
+          </div>
+          <pre><code><span class="token-muted">&gt;&gt;&gt;</span> <span class="token-key">from</span> litecache <span class="token-key">import</span> LiteCache
+
+<span class="token-muted">&gt;&gt;&gt;</span> cache = LiteCache(
+<span class="indent">max_items=<span class="token-number">10_000</span>, default_ttl=<span class="token-number">60</span></span>
+)
+<span class="token-muted">&gt;&gt;&gt;</span> cache.set(<span class="token-string">"user:42"</span>, {<span class="token-string">"name"</span>: <span class="token-string">"Ada"</span>})
+<span class="token-return">True</span>
+
+<span class="token-muted">&gt;&gt;&gt;</span> cache.get(<span class="token-string">"user:42"</span>)
+{<span class="token-string">'name'</span>: <span class="token-string">'Ada'</span>}
+<span class="token-muted">&gt;&gt;&gt;</span> round(cache.ttl(<span class="token-string">"user:42"</span>))
+<span class="token-number">60</span></code></pre>
+          <div class="terminal-status">
+            <span><i></i><span data-copy="ready">cache ready</span></span>
+            <span>0 dependencies</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="manifesto" id="features">
+        <p data-copy="manifesto">
+          The fast path should be the simple path. Keep hot data inside your
+          process with predictable expiration and bounded memory.
+        </p>
+      </section>
+
+      <section class="features" aria-label="Features">
+        <article>
+          <span class="feature-number">01</span>
+          <h2 data-copy="threadSafe">Thread-safe</h2>
+          <p data-copy="threadBody">
+            An RLock protects every operation, including atomic counters and
+            batch writes.
+          </p>
+        </article>
+        <article>
+          <span class="feature-number">02</span>
+          <h2 data-copy="ttlTitle">TTL expiration</h2>
+          <p data-copy="ttlBody">
+            Set a default lifetime or tune individual keys. Expired values
+            disappear lazily or on cleanup.
+          </p>
+        </article>
+        <article>
+          <span class="feature-number">03</span>
+          <h2 data-copy="lruTitle">LRU eviction</h2>
+          <p data-copy="lruBody">
+            Bound memory by item count. Recently used values stay close while
+            colder entries make room.
+          </p>
+        </article>
+        <article>
+          <span class="feature-number">04</span>
+          <h2 data-copy="zeroTitle">Zero dependencies</h2>
+          <p data-copy="zeroBody">
+            One focused Python package. No service, connection pool, protocol,
+            or runtime dependency.
+          </p>
+        </article>
+      </section>
+
+      <section class="api-section" id="api">
+        <div class="api-heading">
+          <h2 data-copy="apiTitle">Small API.<br />Useful primitives.</h2>
+          <p data-copy="apiBody">
+            Familiar operations cover the common cache lifecycle without
+            turning your application into infrastructure.
+          </p>
+        </div>
+        <div class="api-list" role="list">
+          <div role="listitem"><code>set(key, value, ttl, nx)</code><span data-copy="setLabel">store conditionally</span></div>
+          <div role="listitem"><code>get(key, default)</code><span data-copy="getLabel">read and refresh LRU</span></div>
+          <div role="listitem"><code>touch(key, ttl)</code><span data-copy="touchLabel">extend lifetime</span></div>
+          <div role="listitem"><code>incr(key, amount)</code><span data-copy="incrLabel">count atomically</span></div>
+          <div role="listitem"><code>stats()</code><span data-copy="statsLabel">observe behavior</span></div>
+        </div>
+      </section>
+
+      <section class="lifecycle" aria-label="Cache lifecycle">
+        <div class="lifecycle-copy">
+          <h2 data-copy="lifecycleTitle">Bounded by design.</h2>
+          <p data-copy="lifecycleBody">
+            TTL clears stale values. LRU creates space under pressure. Both are
+            deterministic, visible, and easy to reason about.
+          </p>
+        </div>
+        <div class="cache-rail" aria-hidden="true">
+          <div class="cache-item hot"><span>user:42</span><small>58s</small></div>
+          <div class="cache-item"><span>config</span><small>∞</small></div>
+          <div class="cache-item cooling"><span>search:a</span><small>12s</small></div>
+          <div class="cache-item expired"><span>session:9</span><small>0s</small></div>
+          <div class="rail-caption"><span>most recent</span><span>evicted / expired</span></div>
+        </div>
+      </section>
+
+      <section class="closing">
+        <h2 data-copy="closingTitle">Keep hot data close.</h2>
+        <p data-copy="closingBody">Install litecache and ship the fast path today.</p>
+        <div class="install-command">
+          <code>pip install litecache</code>
+          <button class="copy-install" type="button" data-copy="copy">Copy</button>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">L</span>
+        <span>litecache</span>
+      </div>
+      <p data-copy="footerText">MIT licensed. Built for the Python community.</p>
+      <a href="https://github.com/xuehaoweng/litecache">GitHub ↗</a>
+    </footer>
+  </body>
+</html>
