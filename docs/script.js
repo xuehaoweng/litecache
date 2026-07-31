@@ -75,7 +75,7 @@ const translations = {
 let language = "en";
 const languageButton = document.querySelector(".language");
 
-function renderLanguage(nextLanguage) {
+function renderLanguage(nextLanguage, persist = false) {
   language = nextLanguage;
   document.documentElement.lang = language === "zh" ? "zh-CN" : "en";
   const copy = translations[language];
@@ -93,11 +93,21 @@ function renderLanguage(nextLanguage) {
     language === "en" ? "切换到中文" : "Switch to English",
   );
   document.querySelector(".button.secondary").href =
-    language === "en" ? "../README.md" : "../README.zh-CN.md";
+    language === "en"
+      ? "https://github.com/xuehaoweng/litecache#readme"
+      : "https://github.com/xuehaoweng/litecache/blob/main/README.zh-CN.md";
+
+  if (persist) {
+    try {
+      localStorage.setItem("litecache-language", language);
+    } catch {
+      // The language switch still works when storage is unavailable.
+    }
+  }
 }
 
 languageButton.addEventListener("click", () => {
-  renderLanguage(language === "en" ? "zh" : "en");
+  renderLanguage(language === "en" ? "zh" : "en", true);
 });
 
 async function copyText(button, value) {
@@ -120,3 +130,19 @@ document.querySelector(".copy-code").addEventListener("click", (event) => {
 document.querySelector(".copy-install").addEventListener("click", (event) => {
   copyText(event.currentTarget, "pip install litecache");
 });
+
+let savedLanguage = null;
+try {
+  savedLanguage = localStorage.getItem("litecache-language");
+} catch {
+  // Fall back to the browser language when storage is unavailable.
+}
+
+const browserLanguage = navigator.language.toLowerCase().startsWith("zh")
+  ? "zh"
+  : "en";
+renderLanguage(
+  savedLanguage === "zh" || savedLanguage === "en"
+    ? savedLanguage
+    : browserLanguage,
+);
